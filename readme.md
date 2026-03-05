@@ -576,7 +576,6 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 Or in Laravel version 11+ edit your `bootstrap/app.php` file:
 
 ```php
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 return Application::configure(basePath: dirname(__DIR__))
     // the rest of the code
@@ -585,12 +584,12 @@ return Application::configure(basePath: dirname(__DIR__))
         // laravel-roles exceptions
         $exceptions->render(function (\jeremykenedy\LaravelRoles\App\Exceptions\AccessDeniedException $e, Request $request) {
             if ($request->expectsJson()) {
-                return Response::json(array(
-                    'error'    =>  403,
-                    'message'   =>  "Unauthorized.",
-                ), 403);
+                return response()->json(array(
+                    'error'    => 403,
+                    'message'   =>  "Forbidden.",
+                ), Response::HTTP_FORBIDDEN);
             }
-            abort(403, "Unauthorized.");
+            abort(403, "Forbidden.");
         });
     })->create();
 ```
